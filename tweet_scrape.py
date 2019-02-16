@@ -27,8 +27,8 @@ sinceId = None
 #
 # This mode of authentication is the new preferred way
 # of authenticating with Twitter.
-auth = tweepy.OAuthHandler('AghfcGVKWQaAiong0ePbGDUF8', 'Zzxn7qrbhJrP2GI1yueWnedRyZaiyBy6QAxeRIcKKh0TXByahF')
-auth.set_access_token('748279220858687488-hej4p527B4ENloSVEJGamyuoE1u6xWZ', 'Hobq8wcOulem1Q5hb85yoA3aZosmS6jYYa4XZUTxbtuO6')
+auth = tweepy.OAuthHandler('', '')
+auth.set_access_token('', '')
 
 api = tweepy.API(auth)
 
