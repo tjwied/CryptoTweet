@@ -9,7 +9,7 @@ import json
 
 enc = lambda x: x.encode('ascii', errors='ignore')
 
-searchQuery = '"bitcoin"'
+searchQuery = '"$BTC"'
 #searchQuery = '@rubisco_co2'
 
 
@@ -27,8 +27,18 @@ sinceId = None
 #
 # This mode of authentication is the new preferred way
 # of authenticating with Twitter.
-auth = tweepy.OAuthHandler('', '')
-auth.set_access_token('', '')
+
+access = open('api_access', 'r').readlines()
+codes = []
+for line in access:
+    x = line.strip().split()
+    codes.append(x[0])
+    codes.append(x[1])
+
+auth = tweepy.OAuthHandler(str(codes[0]), str(codes[1]))
+auth.set_access_token(str(codes[2]), str(codes[3]))
+
+
 
 api = tweepy.API(auth)
 
