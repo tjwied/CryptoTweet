@@ -33,6 +33,7 @@ coin_list = []
 for element in csv_list:
     basename_extract = os.path.basename(element[:-4])
     coin_list.append(basename_extract)
+    #build_graph.build_graph(element)
     nlp = graph_nlp.topic_modeling(element)
     betweenness = pickle.load( open( basename_extract+"_between.pkl", "rb" ))
     ranking = sorted(betweenness, key=betweenness.get, reverse=True)

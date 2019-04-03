@@ -1,3 +1,8 @@
+# == Scrape Tweets from Twitter with Keywords ==
+# Usage: python scrape_tweets.py
+#
+
+
 import time
 from datetime import datetime
 import tweepy
@@ -9,8 +14,9 @@ import json
 
 enc = lambda x: x.encode('ascii', errors='ignore')
 
+
+# Set search keywords here, use OR to combine multiple keywords into one query
 searchQuery = '"$BTC"'
-#searchQuery = '@rubisco_co2'
 
 
 retweet_filter='-filter:retweets'
@@ -18,8 +24,6 @@ retweet_filter='-filter:retweets'
 q = searchQuery+retweet_filter
 
 tweetsPerQry = 100
-
-fName = 'tweets.txt'
 
 sinceId = None
 
@@ -37,17 +41,19 @@ for line in access:
 
 auth = tweepy.OAuthHandler(str(codes[0]), str(codes[1]))
 auth.set_access_token(str(codes[2]), str(codes[3]))
-
-
-
 api = tweepy.API(auth)
+
+# == Check rate limit == 
 
 check = api.rate_limit_status()
 reset_time = check['resources']['search']['/search/tweets']['reset']
-import datetime
 reset_formatted = datetime.datetime.fromtimestamp(reset_time).strftime('%X')
 print(reset_formatted)
 print(check['resources']['search'])
+
+# == Download Tweets ==
+# Will only download 18k per 15 minutes
+# 
 
 max_id = -1L
 maxTweets = 75000
@@ -77,7 +83,6 @@ with open(fName, 'w') as f:
                 break
             for tweet in new_tweets:
                 tweetson = tweet._json
-                #list_of_tweets.append(tweet._json)
                 tweetdict = {}
                 tweetdict['text'] = tweetson['text']
                 tweetdict['mentions'] = tweetson['entities']['user_mentions']
@@ -85,10 +90,8 @@ with open(fName, 'w') as f:
                 tweetdict['id'] = tweetson['id_str']
                 tweetdict['username'] = tweetson['user']['screen_name']
                 tweetdict['created_at'] = tweetson['created_at']
-                #tweetdict['source'] = accountname
                 list_dic.append(tweetdict)
             tweetCount += len(new_tweets)
-            #print("Downloaded {0} tweets".format(tweetCount))
             max_id = new_tweets[-1].id
         except tweepy.TweepError:
             print 'Rate limited. Sleeping for 15 minutes.'
@@ -97,11 +100,7 @@ with open(fName, 'w') as f:
 
 
 
-#a = open('testing1.json', 'w')
-#json.dump([task for task in list_of_tweets], a)
-
 df = pd.DataFrame(list_dic)
-print(df)
-df.to_csv('~/Desktop/search/bitcoin.csv', header=True, index=False, encoding='utf-8')
+df.to_csv('~/Desktop/search/test.csv', header=True, index=False, encoding='utf-8')
 
 print ("Downloaded {0} tweets, Saved to {1}".format(tweetCount, fName))
