@@ -1,4 +1,4 @@
-COMBINE NETWORK ANALYSIS, SENTIMENT ANALYSIS, AND TOPIC MODELING ON TWITTER
+# COMBINE NETWORK ANALYSIS, SENTIMENT ANALYSIS, AND TOPIC MODELING ON TWITTER
 
 Scrape tweets, build graphs, identify central users, generate list of trending topics and gauge user sentiment. Visualize and interact with networks in a local Dash webapp.
 
