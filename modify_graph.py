@@ -1,9 +1,12 @@
 # -*- coding: utf-8 -*-
 """
-Created on Mon Oct 29 16:49:11 2018
-@author: jingwenken
+Modified on Feb 1 2019
+@author: tjwied
 
-Modified by tjwied on Feb 1 2019 
+Features added: Color by user sentiment score
+
+Original template created on Mon Oct 29 2018
+@author: jingwenken
 """
 
 import pandas as pd

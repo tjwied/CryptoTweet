@@ -12,6 +12,6 @@ Before running "dash_app.py" you must run two scripts:
 
 2. Run "build_graph.py" script to initialize graph and generate sub-graph of important nodes based on network centrality.
 
-3. Finally, run "dash_app.py" with python and navigate to localhost in web browser.
+3. Finally, run "dash_app.py" with python and navigate to localhost (http://127.0.0.1:8050/) in web browser.
 
 Notes on Dash visualization: Nodes are colored by user-averaged sentiment score (Red = negative sentiment, Blue = positive sentiment). Size of node corresponds to number of connections. Top 20 users and topics for each network is listed below. 

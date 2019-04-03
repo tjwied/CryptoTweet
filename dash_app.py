@@ -1,9 +1,17 @@
 # -*- coding: utf-8 -*-
 """
-Created on Mon Oct 29 16:49:11 2018
-@author: jingwenken
+Visualize Twitter networks in Dash.
 
-Modified by tjwied on Feb 1 2019 
+Modified on Feb 1 2019 
+@author: tjwied 
+
+Features added: slider between different networks, top 20 users, top 20 topics, size of nodes correspondance
+to number of connections, color by user sentiment score.
+
+usage: python dash_app.py, navigate to http://127.0.0.1:8050/
+
+Original template created on Mon Oct 29 16:49:11 2018
+@author: jingwenken
 """
 
 import pandas as pd

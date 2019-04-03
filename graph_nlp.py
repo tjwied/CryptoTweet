@@ -2,6 +2,7 @@
 Run topic modeling on Tweets. Number of topics was optimized by computing Coherence Score.
 See Jupyter notebook in /notebooks/topic-modeling.ipynb
 
+@author: tjwied
 """
 
 from gensim import corpora, models

@@ -1,3 +1,10 @@
+"""
+Generate network graphs and user sentiment scores from Tweets.
+@author: tjwied
+Usage: python build_graph.py
+"""
+
+
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 import pandas as pd
 import pickle

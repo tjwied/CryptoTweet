@@ -1,6 +1,8 @@
-# == Scrape Tweets from Twitter with Keywords ==
-# Usage: python scrape_tweets.py
-#
+'''
+Scrape Tweets from Twitter with keywords
+Usage: python scrape_tweets.py
+@author: tjwied
+'''
 
 
 import time
