@@ -1,0 +1,10 @@
+#output files
+*pkl
+*grid
+*edgelist*
+
+#twitter access key
+api_access
+
+#csv files
+*csv*
