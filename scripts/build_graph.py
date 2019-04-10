@@ -137,6 +137,6 @@ def build_graph(filepathtocsv):
     pickle.dump(normalize, open( basename_extract+".pkl", "wb" ))
     pickle.dump(betweenness, open( basename_extract+"_between.pkl", "wb"))
 
-
-for element in csv_list:
-    build_graph(element)
+if __name__ == "__main__":
+    for element in csv_list:
+        build_graph(element)
