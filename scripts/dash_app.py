@@ -2,10 +2,11 @@
 """
 Visualize Twitter networks in Dash.
 
-Modified on Feb 1 2019 
-@author: tjwied 
+Modified on Feb 1 2019
+@author: tjwied
 
-Features added: slider between different networks, top 20 users, top 20 topics, size of nodes correspondance
+Features added: slider between different networks, top 20 users,
+top 20 topics, size of nodes correspondance
 to number of connections, color by user sentiment score.
 
 usage: python dash_app.py, navigate to http://127.0.0.1:8050/
@@ -47,7 +48,7 @@ for element in csv_list:
     basename_extract = os.path.basename(element[:-4])
     coin_list.append(basename_extract)
     nlp = graph_nlp.topic_modeling(element)
-    betweenness = pickle.load( open( basename_extract+"_between.pkl", "rb" ))
+    betweenness = pickle.load(open(basename_extract+"_between.pkl", "rb"))
     ranking = sorted(betweenness, key=betweenness.get, reverse=True)
     graph_components = modify_graph.plot_graph(cwd+'/'+basename_extract+'.grid')
     G_list.append(graph_components[0])
@@ -69,12 +70,13 @@ app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 
 """
 
-Set Layout for Dash App. 
+Set Layout for Dash App.
 
-Networks are visualized at the top of the page with a slider that allows users to transition between networks
-Below the visualization at the top, there are four columns: 1. Overall data (total nodes and edges),
-2. Top Accounts associated with the network, 3. Top topics in network, and 4. Selected users, which
-can be selected with dragging mouse over nodes.
+Networks are visualized at the top of the page with a slider that allows users
+to transition between networks below the visualization at the top, there are
+four columns: 1. Overall data (total nodes and edges), 2. Top Accounts
+associated with the network, 3. Top topics in network, and 4. Selected users,
+which can be selected with dragging mouse over nodes.
 
 """
 app.layout = html.Div([
@@ -88,42 +90,41 @@ app.layout = html.Div([
     ),
         html.Div(className='row', children=[
             html.Div([html.H2('Overall Data'),
-                                html.Div(id='data-summary'),
-                        ], className='three columns'),
-                    html.Div([
+                      html.Div(id='data-summary'),
+                     ], className='three columns'),
+                        html.Div([
                         html.H2('Top Accounts'),
-                                html.Div(id='selected-data'),
-                        ], className='three columns'),
-                    html.Div([
+                        html.Div(id='selected-data'),
+                     ], className='three columns'),
+                        html.Div([
                         html.H2('Topics'),
-                                html.Div(id='selecteder-data'),
-                        ], className='three columns'),
-                    html.Div([html.H2('Selected Data'),
-                                html.Div(id='selected-accounts'),
-                        ], className='three columns')
+                        html.Div(id='selecteder-data'),
+                     ], className='three columns'),
+                        html.Div([html.H2('Selected Data'),
+                        html.Div(id='selected-accounts'),
+                     ], className='three columns')
                 ])
             ])
 
 
-# Incorporate components that will change when certain options are selected.
-
 # Change displayed network when slider value is changed
+
 
 @app.callback(
     dash.dependencies.Output('graph-with-slider', 'figure'),
     [dash.dependencies.Input('year-slider', 'value')])
 def update_graph1(selected_year):
-    fig    = go.Figure(data=[edge_trace_list[selected_year], node_trace_list[selected_year]],
+    fig = go.Figure(data=[edge_trace_list[selected_year], node_trace_list[selected_year]],
                 layout=go.Layout(
                 title='<br>Network for '+str(basename_extract),
                 titlefont=dict(size=16),
                 showlegend=False,
                 hovermode='closest',
-                margin=dict(b=20,l=5,r=5,t=40),
-                annotations=[ dict(
+                margin=dict(b=20, l=5, r=5, t=40),
+                annotations=[dict(
                     showarrow=False,
                     xref="paper", yref="paper",
-                    x=0.005, y=-0.002 ) ],
+                    x=0.005, y=-0.002)],
                 xaxis=dict(showgrid=False, zeroline=False, showticklabels=False),
                 yaxis=dict(showgrid=False, zeroline=False, showticklabels=False)))
     text = 'Tyler'
@@ -134,9 +135,10 @@ def update_graph1(selected_year):
 
 # Change Data Summary when year slider is changed
 
+
 @app.callback(
     Output('data-summary', 'children'),
-    [Input('year-slider','value')])
+    [Input('year-slider', 'value')])
 def display_selected_data(selected_year):
     summary = []
     summary.append(html.P('Num of nodes: '+str(len(node_lengths[selected_year])))),
@@ -145,16 +147,17 @@ def display_selected_data(selected_year):
 
 
 # Change top accounts when slider is moved
-cutoff = 20 # Change this parameter to change number of users displayed
+cutoff = 20  # Change this parameter to change number of users displayed
+
+
 @app.callback(
     Output('selected-data', 'children'),
-    [Input('year-slider','value')])
-
+    [Input('year-slider', 'value')])
 def display_selected_data(selected_year):
     j = 0
     top_ten = []
     for element in ranking:
-        if j < cutoff:  
+        if j < cutoff:
             account = html.P(str(element))
             top_ten.append(account)
         elif j == cutoff:
@@ -165,14 +168,16 @@ def display_selected_data(selected_year):
 
 
 # Change topics displayed when slider is moved
+
+
 @app.callback(
     Output('selecteder-data', 'children'),
-    [Input('year-slider','value')])
+    [Input('year-slider', 'value')])
 def display_selected_data(selected_year):
     j = 0
     topics = []
     for element in topic_list[selected_year]:
-        x    = [i.replace('"', '') for i in topic_list[selected_year][j]]
+        x = [i.replace('"', '') for i in topic_list[selected_year][j]]
         topic = html.P(str(x))
         topics.append(topic)
         j += 1
@@ -180,9 +185,11 @@ def display_selected_data(selected_year):
     return text
 
 # Display selected accounts
+
+
 @app.callback(
     Output('selected-accounts', 'children'),
-    [Input('graph-with-slider','selectedData')])
+    [Input('graph-with-slider', 'selectedData')])
 def display_selected_data(selectedData):
     num_of_nodes = len(selectedData['points'])
     text = [html.P('Num of nodes selected: '+str(num_of_nodes))]
@@ -191,6 +198,7 @@ def display_selected_data(selectedData):
         material = x['text'].split('<br>')[0][6:]
         text.append(html.P(str(material)))
     return text
+
 
 if __name__ == '__main__':
     app.run_server(debug=True)

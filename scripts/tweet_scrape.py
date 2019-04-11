@@ -13,15 +13,14 @@ import numpy as np
 import pickle
 import json
 
-
-enc = lambda x: x.encode('ascii', errors='ignore')
-
+# Set local path and query name
+path = "~/Desktop/search/"
+output = "$BTC"
 
 # Set search keywords here, use OR to combine multiple keywords into one query
 searchQuery = '"$BTC"'
 
-
-retweet_filter='-filter:retweets'
+retweet_filter = '-filter:retweets'
 
 q = searchQuery+retweet_filter
 
@@ -45,7 +44,7 @@ auth = tweepy.OAuthHandler(str(codes[0]), str(codes[1]))
 auth.set_access_token(str(codes[2]), str(codes[3]))
 api = tweepy.API(auth)
 
-# == Check rate limit == 
+# == Check rate limit ==
 
 check = api.rate_limit_status()
 reset_time = check['resources']['search']['/search/tweets']['reset']
@@ -55,7 +54,7 @@ print(check['resources']['search'])
 
 # == Download Tweets ==
 # Will only download 18k per 15 minutes
-# 
+#
 
 max_id = -1L
 maxTweets = 75000
@@ -101,8 +100,7 @@ with open(fName, 'w') as f:
             continue
 
 
-
 df = pd.DataFrame(list_dic)
-df.to_csv('~/Desktop/search/test.csv', header=True, index=False, encoding='utf-8')
+df.to_csv(path+output+".csv", header=True, index=False, encoding='utf-8')
 
-print ("Downloaded {0} tweets, Saved to {1}".format(tweetCount, fName))
+print("Downloaded {0} tweets, Saved to {1}".format(tweetCount, fName))

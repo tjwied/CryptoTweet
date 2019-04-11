@@ -19,37 +19,35 @@ import plotly.graph_objs as go
 import networkx as nx
 import os
 
-#edgelist = '/home/rubisco/Desktop/insight/dash/final/monero.grid'
 
-#create graph G
-def plot_graph(edgelist):
+def plot_graph(edgelist):  # Create graph G
     basename_extract = os.path.basename(edgelist)
-    pkl_file = open(basename_extract[:-4]+'pkl', 'rb') #open file with sentiments
+    pkl_file = open(basename_extract[:-4]+'pkl', 'rb')  # Open sentiments
     values = pickle.load(pkl_file)
 
-    G=nx.read_edgelist(edgelist, delimiter=":") #define graph with an edgelist
+    G = nx.read_edgelist(edgelist, delimiter=":")  # Graph with edgelist
     degree = nx.degree(G)
-    pos = nx.layout.spring_layout(G, ) #x,y positions of each node
-    for node in G.nodes:    #as pos attribute for each node
+    pos = nx.layout.spring_layout(G, )  # x,y positions of each node
+    for node in G.nodes:  # Positional attribute for each node
         G.nodes[node]['pos'] = list(pos[node])
 
-    pos=nx.get_node_attributes(G,'pos')
+    pos = nx.get_node_attributes(G, 'pos')
 
-    dmin=1
-    ncenter=0
+    dmin = 1
+    ncenter = 0
     for n in pos:
-        x,y=pos[n]
-        d=(x-0.5)**2+(y-0.5)**2
-        if d<dmin:
-            ncenter=n
-            dmin=d
-    p=nx.single_source_shortest_path_length(G,ncenter)
+        x, y = pos[n]
+        d = (x-0.5)**2+(y-0.5)**2
+        if d < dmin:
+            ncenter = n
+            dmin = d
+    p = nx.single_source_shortest_path_length(G, ncenter)
 
-    #Create Edges
+    # Create Edges
     edge_trace = go.Scatter(
         x=[],
         y=[],
-        line=dict(width=0.5,color='#888'),
+        line=dict(width=0.5, color='#888'),
         hoverinfo='none',
         mode='lines')
 
@@ -68,9 +66,9 @@ def plot_graph(edgelist):
         marker=dict(
             showscale=True,
             # colorscale options
-            #'Greys' | 'YlGnBu' | 'Greens' | 'YlOrRd' | 'Bluered' | 'RdBu' |
-            #'Reds' | 'Blues' | 'Picnic' | 'Rainbow' | 'Portland' | 'Jet' |
-            #'Hot' | 'Blackbody' | 'Earth' | 'Electric' | 'Viridis' |
+            # 'Greys' | 'YlGnBu' | 'Greens' | 'YlOrRd' | 'Bluered' | 'RdBu' |
+            # 'Reds' | 'Blues' | 'Picnic' | 'Rainbow' | 'Portland' | 'Jet' |
+            # 'Hot' | 'Blackbody' | 'Earth' | 'Electric' | 'Viridis' |
             colorscale='RdBu',
             reversescale=True,
             color=[],
@@ -88,7 +86,7 @@ def plot_graph(edgelist):
         node_trace['x'] += tuple([x])
         node_trace['y'] += tuple([y])
 
-    #add color to node points
+    # Add color to node points
     for node in G.nodes:
         if node in values:
             node_trace['marker']['color'] += tuple([values[node]])
@@ -96,17 +94,16 @@ def plot_graph(edgelist):
                 if deg[0] == node:
                     num = deg[1]
                     numb = [10+2*float(num)]
-                    node_trace['marker']['size']  += tuple(numb)
+                    node_trace['marker']['size'] += tuple(numb)
         if node not in values:
             node_trace['marker']['color'] += tuple([0])
             for deg in degree:
                 if deg[0] == node:
                     num = deg[1]
                     numb = [10+2*float(num)]
-                    node_trace['marker']['size']  += tuple(numb)
+                    node_trace['marker']['size'] += tuple(numb)
 
     for node, adjacencies in enumerate(G.adjacency()):
-        #node_trace['marker']['color']+=tuple([len(adjacencies[1])])
         node_info = 'Name: ' + str(adjacencies[0]) + '<br># of connections: '+str(len(adjacencies[1]))
-        node_trace['text']+=tuple([node_info])
+        node_trace['text'] += tuple([node_info])
     return G, edge_trace, node_trace, G.edges(), G.nodes()
